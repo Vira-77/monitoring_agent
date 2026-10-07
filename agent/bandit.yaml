@@ -1,0 +1,4 @@
+# Bandit exclusions 
+# B101: Excludes the warning for the use of `assert`
+# B104: Excludes the warning for `subprocess.call` with `shell=True` (in order to use 0.0.0.0 in core/config.py for uvicorn)
+skips: ['B101', 'B104']

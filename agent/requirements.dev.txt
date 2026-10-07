@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+click
+py-cpuinfo
+pytest
+httpx
+psutil
+ruff
+coverage
+bandit

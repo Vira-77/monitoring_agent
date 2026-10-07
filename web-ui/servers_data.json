@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Server 1",
+        "ip": "http://demetra.telecomste.net:8080",
+        "status": "online",
+        "cpu_usage": 3.52,
+        "memory_usage": 30.04,
+        "errors": 0,
+        "hostname": "Unknown"
+    },
+    {
+        "name": "Server 2",
+        "ip": "http://yvain.telecomste.net:8080",
+        "status": "online",
+        "cpu_usage": 3.5,
+        "memory_usage": 30.11,
+        "errors": 0,
+        "hostname": "Unknown"
+    },
+    {
+        "name": "Server LOCAL",
+        "ip": "http://localhost:8000",
+        "status": "error",
+        "cpu_usage": 0,
+        "memory_usage": 0,
+        "errors": 2,
+        "hostname": "Unknown"
+    }
+]
