@@ -1,43 +1,32 @@
-from dash import (
-    Dash,
-    dcc,
-    html,
-    callback_context,
-    ALL
-)
-from dash.dependencies import Input, Output, State
-from dash.exceptions import PreventUpdate
-import dash_bootstrap_components as dbc
-import json
 import asyncio
-import time
+import json
 import re
+import time
 import urllib.parse
 from asyncio import gather
 
-from components.home_page import (
-    create_home_page,
-    create_server_panel
-)
-from components.dashboard import (
-    create_dashboard_layout,
-    update_dashboard_content
-)
+import dash_bootstrap_components as dbc
+from dash import ALL, Dash, callback_context, dcc, html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+from components.dashboard import create_dashboard_layout, update_dashboard_content
+from components.home_page import create_home_page, create_server_panel
 from utils.api import (
-    get_cpu_data,
-    get_memory_data_used,
-    get_memory_data_free,
-    get_disk_data,
-    get_cpu_historical,
-    get_memory_historical,
     clear_history,
-    get_log_data,
+    get_cpu_data,
     get_cpu_frequency,
-    get_cpu_name,
     get_cpu_frequency_historical,
+    get_cpu_historical,
+    get_cpu_name,
+    get_disk_data,
     get_hostname,
+    get_log_data,
+    get_memory_data_free,
+    get_memory_data_used,
+    get_memory_historical,
     get_top_cpu_processes,
-    get_total_errors
+    get_total_errors,
 )
 
 REFRESH_RATE = 5
@@ -58,18 +47,18 @@ def load_servers_data():
     except json.JSONDecodeError:
         print(f"Error: {SERVERS_DATA_FILE} contains invalid JSON. Returning empty list.")
         return []
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error loading servers data: {e}")
         return []
 
 def save_servers_data(data):
     try:
         if not isinstance(data, list):
-            raise ValueError("Data to save should be a list")
+            raise TypeError("Data to save should be a list")
         with open(SERVERS_DATA_FILE, 'w') as f:
             json.dump(data, f, indent=4)
         print(f"Successfully saved {len(data)} server(s) data.")
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error saving servers data: {e}")
 
 app = Dash(__name__, 
@@ -94,13 +83,12 @@ def display_page(pathname, search):
         return create_home_page(servers_data)
     
     elif pathname == '/dashboard':
-        if search and 'server=' in search:
-            if 'hostname=' in search:
-                clear_history()
-                params = urllib.parse.parse_qs(search.lstrip('?'))
-                ip_address = params.get('server', [''])[0]
-                hostname = params.get('hostname', [''])[0]
-                return create_dashboard_layout(ip_address, hostname)
+        if search and 'server=' in search and 'hostname=' in search:
+            clear_history()
+            params = urllib.parse.parse_qs(search.lstrip('?'))
+            ip_address = params.get('server', [''])[0]
+            hostname = params.get('hostname', [''])[0]
+            return create_dashboard_layout(ip_address, hostname)
         
         return html.Div("No server specified")
     return '404'
@@ -190,23 +178,26 @@ def update_server_list(add_clicks, remove_clicks, server_ip):
                 save_servers_data(servers_data)
                 return create_server_panel(servers_data), {'timestamp': time.time(), 'action': 'remove'}
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error processing remove button: {e}")
             raise PreventUpdate
     
-    if 'add-server-button' in triggered_id and server_ip:
-        if not any(s['ip'] == server_ip for s in servers_data):
-            new_server = {
-                'name': f'Server {len(servers_data) + 1}',
-                'ip': server_ip,
-                'status': 'offline',
-                'cpu_usage': 0,
-                'memory_usage': 0,
-                'errors': 0
-            }
-            servers_data.append(new_server)
-            save_servers_data(servers_data)
-            return create_server_panel(servers_data), {'timestamp': time.time(), 'action': 'add'}
+    if (
+        'add-server-button' in triggered_id
+        and server_ip
+        and not any(s['ip'] == server_ip for s in servers_data)
+    ):
+        new_server = {
+            'name': f'Server {len(servers_data) + 1}',
+            'ip': server_ip,
+            'status': 'offline',
+            'cpu_usage': 0,
+            'memory_usage': 0,
+            'errors': 0
+        }
+        servers_data.append(new_server)
+        save_servers_data(servers_data)
+        return create_server_panel(servers_data), {'timestamp': time.time(), 'action': 'add'}
 
     return create_server_panel(servers_data), {'timestamp': time.time(), 'action': 'none'}
 
@@ -259,13 +250,13 @@ def update_server_metrics(_):
                 server['errors'] = 0
                 print(f"Metrics failed for {server_ip}")
 
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 server['status'] = 'error'
                 server['hostname'] = 'Unknown'
                 server['cpu_usage'] = 0
                 server['memory_usage'] = 0
                 server['errors'] += 1
-                print(f"Error updating metrics for {server_ip}: {str(e)}")
+                print(f"Error updating metrics for {server_ip}: {e!s}")
         
         save_servers_data(servers_data)
         return create_server_panel(servers_data)

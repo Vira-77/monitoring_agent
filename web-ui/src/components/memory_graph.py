@@ -1,5 +1,6 @@
-from dash import dcc
 import plotly.graph_objs as go
+from dash import dcc
+
 
 def create_memory_graph(historical_data_memory):
     try:
@@ -14,10 +15,10 @@ def create_memory_graph(historical_data_memory):
                 y=y_values,
                 name='Memory Usage',
                 mode='lines',
-                line=dict(
-                    color='#2ecc71',
-                    width=3
-                ),
+                line={
+                    'color': '#2ecc71',
+                    'width': 3
+                },
                 fill='tozeroy',
                 fillcolor='rgba(46, 204, 113, 0.2)'
             ))

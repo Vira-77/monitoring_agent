@@ -1,6 +1,8 @@
 import json
-from dash import dcc
+
 import plotly.graph_objects as go
+from dash import dcc
+
 
 def create_disk_chart(disk_data):
     try:
@@ -71,7 +73,7 @@ def create_disk_chart(disk_data):
     fig.update_layout(
         paper_bgcolor="white",
         plot_bgcolor="white",
-        margin=dict(l=20, r=20, t=60, b=20)
+        margin={"l": 20, "r": 20, "t": 60, "b": 20}
     )   
 
     return dcc.Graph(

@@ -1,8 +1,9 @@
 """
 This module defines API routes for handling Disk-related data.
 """
-from typing import List
+
 from fastapi import APIRouter, Request
+
 from domain.schemas import (
     ExceptionResponseSchema,
     GetDiskResponseSchema,
@@ -30,11 +31,11 @@ async def get_root(request: Request) -> int:
 
 @disk_router.get(
     "/usage",
-    response_model=List[GetDiskResponseSchema],
+    response_model=list[GetDiskResponseSchema],
     # response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_disk(request: Request) -> List[GetDiskResponseSchema]:
+async def get_disk(request: Request) -> list[GetDiskResponseSchema]:
     """
     Route to get a list of Disk data.
 

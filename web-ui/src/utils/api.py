@@ -1,8 +1,9 @@
-import aiohttp
-from typing import Dict, List
-from datetime import datetime
 import asyncio
-from utils.state import update_state, get_state
+from datetime import datetime
+
+import aiohttp
+
+from utils.state import get_state, update_state
 
 CPU_HISTORY = []
 MEMORY_HISTORY = {
@@ -57,17 +58,17 @@ async def fetch_data(session, url, timeout=DEFAULT_TIMEOUT, max_retries=MAX_RETR
                 else:
                     print(f"Attempt {attempt + 1}/{max_retries}: Failed to fetch data from {url}: Status {response.status}")
                     
-        except asyncio.TimeoutError:
+        except TimeoutError:
             print(f"Attempt {attempt + 1}/{max_retries}: Timeout when fetching data from {url}")
-        except Exception as e:
-            print(f"Attempt {attempt + 1}/{max_retries}: Error fetching data from {url}: {str(e)}")
+        except Exception as e:  # noqa: BLE001
+            print(f"Attempt {attempt + 1}/{max_retries}: Error fetching data from {url}: {e!s}")
             
         if attempt < max_retries - 1:
             await asyncio.sleep(RETRY_DELAY)
             
     return None
 
-async def get_cpu_data(IP_ADDRESS: str) -> List[Dict]:
+async def get_cpu_data(IP_ADDRESS: str) -> list[dict]:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -85,7 +86,7 @@ async def get_cpu_data(IP_ADDRESS: str) -> List[Dict]:
             return get_state('cpu_usage')
         return None
 
-async def get_memory_data(IP_ADDRESS: str) -> Dict:
+async def get_memory_data(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -98,7 +99,7 @@ async def get_memory_data(IP_ADDRESS: str) -> Dict:
             update_state('memory_percent', default_data)
             return default_data
 
-async def get_memory_data_free(IP_ADDRESS: str) -> Dict:
+async def get_memory_data_free(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -110,7 +111,7 @@ async def get_memory_data_free(IP_ADDRESS: str) -> Dict:
             return get_state('memory_free')
         return None
 
-async def get_memory_data_used(IP_ADDRESS: str) -> Dict:
+async def get_memory_data_used(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -122,7 +123,7 @@ async def get_memory_data_used(IP_ADDRESS: str) -> Dict:
             return get_state('memory_used')
         return None
 
-async def get_disk_data(IP_ADDRESS: str) -> Dict:
+async def get_disk_data(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -135,7 +136,7 @@ async def get_disk_data(IP_ADDRESS: str) -> Dict:
             update_state('disk_usage', default_data)
             return default_data
 
-async def get_log_data(IP_ADDRESS: str) -> List[Dict]:
+async def get_log_data(IP_ADDRESS: str) -> list[dict]:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -147,7 +148,7 @@ async def get_log_data(IP_ADDRESS: str) -> List[Dict]:
             update_state('logs', [])
             return []
         
-async def get_cpu_name(IP_ADDRESS: str) -> Dict:
+async def get_cpu_name(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -161,7 +162,7 @@ async def get_cpu_name(IP_ADDRESS: str) -> Dict:
             update_state('cpu_name', default_data)
             return default_data
 
-async def get_hostname(IP_ADDRESS: str) -> Dict:
+async def get_hostname(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -173,7 +174,7 @@ async def get_hostname(IP_ADDRESS: str) -> Dict:
             default_data = {'hostname': "Unknown"}
             update_state('hostname', default_data)
             return default_data
-async def get_top_cpu_processes(IP_ADDRESS: str) -> List[Dict]:
+async def get_top_cpu_processes(IP_ADDRESS: str) -> list[dict]:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -182,7 +183,7 @@ async def get_top_cpu_processes(IP_ADDRESS: str) -> List[Dict]:
             update_state('top_processes', data)
             return data
         return []
-async def get_total_errors(IP_ADDRESS: str) -> Dict:
+async def get_total_errors(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:
@@ -193,7 +194,7 @@ async def get_total_errors(IP_ADDRESS: str) -> Dict:
             default_data = {'value': 0}
             return default_data
         
-async def get_cpu_frequency(IP_ADDRESS: str) -> Dict:
+async def get_cpu_frequency(IP_ADDRESS: str) -> dict:
     if "http" not in IP_ADDRESS:
         IP_ADDRESS = "http://" + IP_ADDRESS
     async with aiohttp.ClientSession() as session:

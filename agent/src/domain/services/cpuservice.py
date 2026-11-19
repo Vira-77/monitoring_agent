@@ -1,7 +1,7 @@
 """
 This module defines a controller class for fetching CPU values from a monitoring task.
 """
-from typing import List
+
 from domain.models import Cpu
 from monitor import MonitorTask
 
@@ -15,7 +15,7 @@ class CpuService:
     def __init__(self: "CpuService")-> None:
         ...
 
-    async def get_cpu(self: "CpuService", monitor_task: MonitorTask) -> List[Cpu]:
+    async def get_cpu(self: "CpuService", monitor_task: MonitorTask) -> list[Cpu]:
         """
         Get CPU values from the provided monitoring task and return them as a list of Cpu objects.
 

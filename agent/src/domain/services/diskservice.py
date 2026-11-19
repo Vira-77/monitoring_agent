@@ -1,7 +1,7 @@
 """
 This module defines a controller class for fetching Disk values from a monitoring task.
 """
-from typing import List
+
 from domain.models import Disk
 from monitor import MonitorTask
 
@@ -15,7 +15,7 @@ class DiskService:
     def __init__(self: "DiskService") -> None:
         ...
     
-    async def get_Disk(self: "DiskService", monitor_task: MonitorTask) -> List[Disk]:
+    async def get_Disk(self: "DiskService", monitor_task: MonitorTask) -> list[Disk]:
         """
         Get RAM usage values from the provided monitoring task and return them as a Ram object.
 

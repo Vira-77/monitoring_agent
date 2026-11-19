@@ -1,10 +1,10 @@
 """
 This module defines a controller class for fetching CPU values from a monitoring task.
 """
-from typing import List
+from datetime import datetime
+
 from domain.models import Logs
 from monitor import MonitorTask
-from datetime import datetime
 
 
 # Controller class to fetch logs values from monitoring task
@@ -16,7 +16,7 @@ class LogsService:
     def __init__(self: "LogsService") -> None:
         ...
 
-    async def get_logs(self: "LogsService", monitor_task: MonitorTask) -> List[Logs]:
+    async def get_logs(self: "LogsService", monitor_task: MonitorTask) -> list[Logs]:
         """
         Retrieve log metrics and statistics from the monitoring task.
 

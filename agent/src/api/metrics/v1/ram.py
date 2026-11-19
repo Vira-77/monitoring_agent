@@ -2,6 +2,7 @@
 This module defines API routes for handling RAM-related data.
 """
 from fastapi import APIRouter, Request
+
 from domain.schemas import (
     ExceptionResponseSchema,
     GetRamResponseSchema,

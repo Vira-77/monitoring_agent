@@ -1,17 +1,18 @@
 """
 This module defines API routes for handling CPU-related data.
 """
+
 import psutil
-from typing import List
+from cpuinfo import get_cpu_info
 from fastapi import APIRouter, Request
+
 from domain.schemas import (
     ExceptionResponseSchema,
-    GetCpuResponseSchema,
+    GetAverageResponseSchema,
     GetCpuCoreResponseSchema,
-    GetAverageResponseSchema
+    GetCpuResponseSchema,
 )
 from domain.services import CpuService
-from cpuinfo import get_cpu_info
 
 cpu_router = APIRouter()
 
@@ -51,10 +52,10 @@ async def get_cpu_name(request: Request) -> GetAverageResponseSchema:
 
 @cpu_router.get(
     "/frequency",
-    response_model=List[GetCpuCoreResponseSchema],
+    response_model=list[GetCpuCoreResponseSchema],
     responses={"400": {"model": ExceptionResponseSchema}}
 )
-async def get_cpu_frequency(request: Request) -> List[GetCpuCoreResponseSchema]:
+async def get_cpu_frequency(request: Request) -> list[GetCpuCoreResponseSchema]:
     """
     Route to get the CPU frequency.
 
@@ -71,16 +72,16 @@ async def get_cpu_frequency(request: Request) -> List[GetCpuCoreResponseSchema]:
 
         return obj
 
-    except Exception as e:
-        return {"detail": f"Error retrieving CPU frequency: {str(e)}"}
+    except Exception as e:  # noqa: BLE001
+        return {"detail": f"Error retrieving CPU frequency: {e!s}"}
 
 @cpu_router.get(
     "/usage",
-    response_model=List[GetCpuResponseSchema],
+    response_model=list[GetCpuResponseSchema],
     # response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_cpu(request: Request) -> List[GetCpuResponseSchema]:
+async def get_cpu(request: Request) -> list[GetCpuResponseSchema]:
     """
     Route to get a list of CPU data.
 
@@ -114,10 +115,10 @@ async def get_core_number(request: Request) -> GetCpuCoreResponseSchema:
 
 @cpu_router.get(
     "/averageuse",
-    response_model=List[GetAverageResponseSchema],
+    response_model=list[GetAverageResponseSchema],
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_average(request: Request) -> List[GetAverageResponseSchema]:
+async def get_average(request: Request) -> list[GetAverageResponseSchema]:
     """
     Fetch the average CPU usage across all cores.
 

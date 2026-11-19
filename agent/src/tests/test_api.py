@@ -1,10 +1,13 @@
-import threading
-from fastapi.testclient import TestClient
-from server import app
-from monitor import MonitorTask
-from collections import defaultdict
 import re
+import threading
+from collections import defaultdict
 from pathlib import Path
+
+from fastapi.testclient import TestClient
+
+from monitor import MonitorTask
+from server import app
+
 
 class MonitorTaskFake(MonitorTask):
     """
@@ -14,32 +17,32 @@ class MonitorTaskFake(MonitorTask):
     and make deterministic test (deterministic = repeatable and known values)
     """
     interval: int = 0
-    cpu_percent: list[float] = ["10", "12"]
+    cpu_percent: list[float] = ["10", "12"]  # noqa: RUF012
     num_cores: int = 3
-    ram_metrics: dict = {
+    ram_metrics: dict = {  # noqa: RUF012
         "total": "10",
         "used": "5",
         "free": "5",
         "percent": "50",
     }
-    disk_metrics: dict = {
+    disk_metrics: dict = {  # noqa: RUF012
         "total":"1000",
         "used": "50",
         "free": "9950",
         "percent": "0.1",
     }
 
-    logs_metrics: list[object] = [{'status': '200', 'message': 'Request to /page1', 'error': '', 'timestamp': '09/Jan/2020:09:25:25 +0000', 'level': 'INFO', 'logger': 'HTTPAccess', 'method': 'GET'}, {'status': '200', 'message': 'Request to /page2', 'error': '', 'timestamp': '09/Jan/2020:12:12:49 +0000', 'level': 'INFO', 'logger': 'HTTPAccess', 'method': 'GET'}]
-    status_counts = defaultdict(int)
-    user_counts = defaultdict(int)
+    logs_metrics: list[object] = [{'status': '200', 'message': 'Request to /page1', 'error': '', 'timestamp': '09/Jan/2020:09:25:25 +0000', 'level': 'INFO', 'logger': 'HTTPAccess', 'method': 'GET'}, {'status': '200', 'message': 'Request to /page2', 'error': '', 'timestamp': '09/Jan/2020:12:12:49 +0000', 'level': 'INFO', 'logger': 'HTTPAccess', 'method': 'GET'}]  # noqa: RUF012
+    status_counts = defaultdict(int)  # noqa: RUF012
+    user_counts = defaultdict(int)  # noqa: RUF012
     error_count = 0
     access_log_path = Path(__file__).absolute().parent.parent.parent / 'test.log'
-    wordpress_logs = [
+    wordpress_logs = [  # noqa: RUF012
         {'path': '/page1'},
         {'path': '/page1'},
         {'path': '/page2'}
     ]
-    wordpress_error_logs = [
+    wordpress_error_logs = [  # noqa: RUF012
         {'status': '404', 'message': 'Request to /notfound', 'error': 'HTTP 404', 'timestamp': '09/Jan/2020:09:25:25 +0000', 'level': 'ERROR', 'logger': 'HTTPAccess', 'method': 'GET', 'path': '/notfound'},
         {'status': '500', 'message': 'Request to /servererror', 'error': 'HTTP 500', 'timestamp': '09/Jan/2020:12:12:49 +0000', 'level': 'ERROR', 'logger': 'HTTPAccess', 'method': 'POST', 'path': '/servererror'}
     ]
@@ -88,7 +91,7 @@ class MonitorTaskFake(MonitorTask):
                     self.error_count += 1
                     
                 return log_entry
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error parsing log line: {e}")
         return None
 

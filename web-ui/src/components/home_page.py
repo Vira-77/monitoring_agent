@@ -1,5 +1,6 @@
-from dash import html
 import dash_bootstrap_components as dbc
+from dash import html
+
 
 def create_home_page(servers_data):
     return html.Div([
@@ -66,7 +67,7 @@ def create_server_rows(servers_data):
     if isinstance(servers_data, list):
         try:
             return [create_server_row(server) for server in servers_data]
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error creating server rows: {e}")
             return [html.Tr([html.Td("Error loading server data", colSpan=7)])]
     else:

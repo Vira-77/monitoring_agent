@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality:
+    name: Quality (${{ matrix.component }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        component:
+          - agent
+          - web-ui
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.component }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build --tag monitoring-${{ matrix.component }}:ci .
+
+      - name: Run tests, coverage, lint and security checks
+        run: |
+          docker run --rm \
+            --volume "${{ github.workspace }}/${{ matrix.component }}:/app" \
+            --workdir /app \
+            python:3.11-slim \
+            sh -c '
+              set -eu
+              apt-get update
+              apt-get install --no-install-recommends --yes make
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir -r requirements.dev.txt
+              make coverage-test
+              ruff check src/
+              make find-security-issues
+            '

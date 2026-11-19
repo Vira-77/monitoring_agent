@@ -1,7 +1,7 @@
 """
 This module defines a controller class for fetching RAM values from a monitoring task.
 """
-from typing import List
+
 from domain.models import Ram
 from monitor import MonitorTask
 
@@ -14,7 +14,7 @@ class RamService:
     def __init__(self: "RamService") -> None:
         ...
 
-    async def get_ram(self: "RamService", monitor_task: MonitorTask) -> List[Ram]:
+    async def get_ram(self: "RamService", monitor_task: MonitorTask) -> list[Ram]:
         """
         Get RAM usage values from the provided monitoring task and return them as a Ram object.
 

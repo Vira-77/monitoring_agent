@@ -1,5 +1,6 @@
 from dash import dcc
 
+
 def create_cpu_chart(cpu_data):
     try:
         cores = [f'Core {d["id"]}' for d in cpu_data]

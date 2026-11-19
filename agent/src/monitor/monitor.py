@@ -1,10 +1,12 @@
 """This module defines a `MonitorTask` class for monitoring metrics on a host."""
-import time
-import psutil
-import threading
 import re
+import threading
+import time
 from collections import defaultdict
 from pathlib import Path
+
+import psutil
+
 
 class MonitorTask:
     """A class for monitoring system and HTTP log metrics."""
@@ -101,7 +103,7 @@ class MonitorTask:
                 self.user_counts[data['ip']] += 1
 
                 return log_entry
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error parsing log line: {e}")
         return None
 
@@ -121,7 +123,7 @@ class MonitorTask:
                         self.logs_metrics.append(log_entry)
                         # Keep only the last 1000 entries
                         self.logs_metrics = self.logs_metrics[-1000:]
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error processing logs: {e}")
 
     def parse_wordpress_log_line(self: "MonitorTask", line: str) -> dict:
@@ -168,7 +170,7 @@ class MonitorTask:
                         self.wordpress_error_logs.append(log_entry)
             
             return log_entry
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error parsing log line: {e}")
         return None
 
@@ -184,7 +186,7 @@ class MonitorTask:
             with open("/var/log/apache2/other_vhosts_access.log", 'r') as f:
                 for line in f:
                     self.parse_wordpress_log_line(line.strip())
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             print(f"Error processing logs: {e}")
         
         self.wordpress_logs = self.wordpress_logs[-1000:]

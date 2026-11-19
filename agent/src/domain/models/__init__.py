@@ -1,12 +1,12 @@
-from .cpu import Cpu, Average
-from .ram import Ram
+from .cpu import Average, Cpu
 from .disk import Disk
 from .logs import Logs
+from .ram import Ram
 
 __all__ = [
-    "Ram",
+    "Average",
     "Cpu",
     "Disk",
-    "Average",
-    "Logs"
+    "Logs",
+    "Ram"
 ]
