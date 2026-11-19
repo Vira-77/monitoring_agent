@@ -1,5 +1,6 @@
 from dash import dcc
 
+
 def create_memory_total_graph(memory_data_used, memory_data_free):
     try:
         free_ram = float(memory_data_free.get('value', 0))

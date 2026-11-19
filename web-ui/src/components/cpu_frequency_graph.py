@@ -1,5 +1,6 @@
-from dash import dcc
 import plotly.graph_objs as go
+from dash import dcc
+
 
 def create_cpu_frequency_graph(frequency_data, cpu_name):
     try:
@@ -14,10 +15,10 @@ def create_cpu_frequency_graph(frequency_data, cpu_name):
                 y=y_values,
                 name='CPU Frequency',
                 mode='lines',
-                line=dict(
-                    color='#3498db',
-                    width=3
-                )
+                line={
+                    'color': '#3498db',
+                    'width': 3
+                }
             ))
 
         return dcc.Graph(

@@ -1,5 +1,6 @@
-from dash import html
 import dash_bootstrap_components as dbc
+from dash import html
+
 
 def create_process_table(processes_data):
     if not processes_data:

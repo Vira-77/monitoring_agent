@@ -1,6 +1,8 @@
-from dash import dcc
-import plotly.graph_objs as go
 from datetime import datetime
+
+import plotly.graph_objs as go
+from dash import dcc
+
 
 def create_combined_graph(cpu_historical_data, memory_historical_data):
     try:
@@ -17,10 +19,10 @@ def create_combined_graph(cpu_historical_data, memory_historical_data):
                 y=cpu_y_values,
                 name='CPU Average Usage',
                 mode='lines',
-                line=dict(
-                    color='#3498db',
-                    width=3
-                )
+                line={
+                    'color': '#3498db',
+                    'width': 3
+                }
             ))
 
         if memory_historical_data and len(memory_historical_data) > 0:
@@ -32,10 +34,10 @@ def create_combined_graph(cpu_historical_data, memory_historical_data):
                 y=memory_y_values,
                 name='Memory Usage',
                 mode='lines',
-                line=dict(
-                    color='#2ecc71',
-                    width=3
-                ),
+                line={
+                    'color': '#2ecc71',
+                    'width': 3
+                },
                 fill='tozeroy',
                 fillcolor='rgba(46, 204, 113, 0.2)'
             ))

@@ -3,12 +3,11 @@ This module defines API default routes for a router.
 
 These routes handle health checks and basic information requests.
 """
-from fastapi import APIRouter, Response, Request
-from domain.schemas import (
-    ExceptionResponseSchema,
-    BasicResponseSchema
-)
 import socket
+
+from fastapi import APIRouter, Request, Response
+
+from domain.schemas import BasicResponseSchema, ExceptionResponseSchema
 
 default_router = APIRouter()
 

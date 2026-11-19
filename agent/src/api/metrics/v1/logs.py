@@ -1,13 +1,14 @@
+
 import psutil
-from typing import List
 from fastapi import APIRouter, Request
+
 from domain.schemas import (
+    BasicIntResponseSchema,
+    BasicResponseSchema,
     ExceptionResponseSchema,
+    GetLogsLastErrorResponseSchema,
     GetLogsResponseSchema,
     ProcessResourceUsageSchema,
-    BasicResponseSchema,
-    BasicIntResponseSchema,
-    GetLogsLastErrorResponseSchema
 )
 from domain.services import LogsService
 from monitor import MonitorTask
@@ -16,10 +17,10 @@ logs_router = APIRouter()
 
 @logs_router.get(
     "/usage",
-    response_model=List[GetLogsResponseSchema],
+    response_model=list[GetLogsResponseSchema],
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_logs(request: Request) -> List[GetLogsResponseSchema]:
+async def get_logs(request: Request) -> list[GetLogsResponseSchema]:
     """
     Route to get a list of Logs data.
 
@@ -33,10 +34,10 @@ async def get_logs(request: Request) -> List[GetLogsResponseSchema]:
 
 @logs_router.get(
     "/topprocesses",
-    response_model=List[ProcessResourceUsageSchema],
+    response_model=list[ProcessResourceUsageSchema],
     responses={"400": {"model": ExceptionResponseSchema}}
 )
-async def get_top_processes(request: Request) -> List[ProcessResourceUsageSchema]:
+async def get_top_processes(request: Request) -> list[ProcessResourceUsageSchema]:
     """
     Route pour obtenir les processus qui utilisent le plus de ressources CPU et RAM.
 
@@ -65,8 +66,8 @@ async def get_top_processes(request: Request) -> List[ProcessResourceUsageSchema
 
         return processes[:5]
 
-    except Exception as e:
-        return {"detail": f"Error retrieving top processes: {str(e)}"}
+    except Exception as e:  # noqa: BLE001
+        return {"detail": f"Error retrieving top processes: {e!s}"}
 
 @logs_router.get(
     "/error_count",
@@ -89,10 +90,10 @@ async def get_error_count(request: Request) -> BasicIntResponseSchema:
 
 @logs_router.get(
     "/last_errors",
-    response_model=List[GetLogsLastErrorResponseSchema],
+    response_model=list[GetLogsLastErrorResponseSchema],
     responses={"400": {"model": ExceptionResponseSchema}},
 )
-async def get_last_errors(request: Request) -> List[GetLogsLastErrorResponseSchema]:
+async def get_last_errors(request: Request) -> list[GetLogsLastErrorResponseSchema]:
     """
     Route to get the last 5 error logs (status code >= 400).
 

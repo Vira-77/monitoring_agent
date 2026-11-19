@@ -1,9 +1,12 @@
 """Module providing main entrypoint."""
 import os
+from pathlib import Path
+
 import click
 import uvicorn
-from pathlib import Path
+
 from core.config import get_config
+
 
 # Setup cli parameter for main command (main.py --debug --env local)
 @click.command()

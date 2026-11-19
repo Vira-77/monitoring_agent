@@ -1,27 +1,29 @@
-import unittest 
-from unittest.mock import patch
 import asyncio
+import unittest
+from unittest.mock import patch
+
 from utils.api import (
+    CPU_FREQUENCY_HISTORY,
+    CPU_HISTORY,
+    MEMORY_HISTORY,
+    clear_history,
     get_cpu_data,
+    get_cpu_frequency,
+    get_cpu_frequency_historical,
+    get_cpu_historical,
     get_cpu_name,
+    get_disk_data,
+    get_hostname,
+    get_log_data,
     get_memory_data,
     get_memory_data_free,
     get_memory_data_used,
-    get_disk_data,
-    get_log_data,
-    get_hostname,
-    clear_history,
-    get_cpu_frequency,
-    get_top_cpu_processes,
-    get_cpu_historical,
     get_memory_historical,
-    get_cpu_frequency_historical,
+    get_top_cpu_processes,
     get_total_errors,
-    CPU_FREQUENCY_HISTORY,
-    CPU_HISTORY,
-    MEMORY_HISTORY
 )
 from utils.state import clear_state
+
 
 class TestAPI(unittest.TestCase):
     def setUp(self):

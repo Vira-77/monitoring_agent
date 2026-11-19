@@ -1,12 +1,14 @@
-from dash import html
 import dash_bootstrap_components as dbc
-from components.cpu_chart import create_cpu_chart
-from components.memory_chart import create_memory_total_graph
-from components.disk_chart import create_disk_chart
+from dash import html
+
 from components.combined_graph import create_combined_graph
-from components.log_array import create_detailed_logs_chart
+from components.cpu_chart import create_cpu_chart
 from components.cpu_frequency_graph import create_cpu_frequency_graph
+from components.disk_chart import create_disk_chart
+from components.log_array import create_detailed_logs_chart
+from components.memory_chart import create_memory_total_graph
 from components.process_table import create_process_table
+
 
 def create_dashboard_layout(ip_address, hostname):
     return html.Div([

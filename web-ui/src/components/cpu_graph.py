@@ -1,6 +1,7 @@
-from dash import dcc
-import plotly.graph_objs as go
 import numpy as np
+import plotly.graph_objs as go
+from dash import dcc
+
 
 def create_cpu_graph(historical_data):
     traces = []
@@ -15,10 +16,10 @@ def create_cpu_graph(historical_data):
             y=y_values,
             name='Average CPU Usage',
             mode='lines',
-            line=dict(
-                color='#2ecc71',
-                width=3
-            ),
+            line={
+                'color': '#2ecc71',
+                'width': 3
+            },
             fill='tozeroy',
             fillcolor='rgba(46, 204, 113, 0.2)'
         ))

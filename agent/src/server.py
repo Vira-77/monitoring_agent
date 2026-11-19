@@ -4,18 +4,21 @@ This module contains a FastAPI application with various routes and middleware.
 It initializes the FastAPI app, sets up routers, event listeners, and exception handlers, and
 creates a monitoring thread for fetching metrics.
 """
-from typing import List, AsyncGenerator
+import asyncio
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
 from api import router
 from api.default.default import default_router
-from core.exceptions import CustomException
 from core.config import get_config
+from core.exceptions import CustomException
 from monitor import MonitorTask
-from contextlib import asynccontextmanager
-import asyncio
+
 
 def init_routers(fastapi: FastAPI) -> None:
     """
@@ -56,7 +59,7 @@ def init_listeners(fastapi: FastAPI) -> None:
             task.cancel()
 
 
-def make_middleware() -> List[Middleware]:
+def make_middleware() -> list[Middleware]:
     """
     Create and return a list of middleware components, including CORS middleware.
 

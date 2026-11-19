@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class GetRamResponseSchema(BaseModel):
     """
     Pydantic data model for the response schema representing RAM usage information.
