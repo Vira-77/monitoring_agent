@@ -38,6 +38,9 @@ jobs:
             python:3.11-slim \
             sh -c '
               set -eu
+              apt-get update
+              apt-get install --no-install-recommends --yes make
+              rm -rf /var/lib/apt/lists/*
               python -m pip install --no-cache-dir -r requirements.dev.txt
               make coverage-test
               ruff check src/
