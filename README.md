@@ -72,6 +72,26 @@ ruff check src/           # lint
 make find-security-issues # bandit
 ```
 
+### CI GitHub et pull requests
+
+Le workflow [CI](.github/workflows/ci.yml) s'exécute sur chaque push vers `main`
+et sur chaque pull request vers `main`. Pour `agent` et `web-ui`, il :
+
+1. construit l'image Docker du composant ;
+2. installe les dépendances de développement dans un conteneur ;
+3. lance les tests avec une couverture minimale de 80 % ;
+4. lance Ruff et Bandit.
+
+Pour empêcher la fusion d'une pull request lorsque la CI échoue, activer la
+protection de la branche `main` dans **Settings > Branches > Add branch ruleset**
+et rendre obligatoires les deux contrôles :
+
+- `Quality (agent)`
+- `Quality (web-ui)`
+
+GitHub permet ainsi de valider automatiquement le code avant la fusion, comme
+avec GitLab CI, mais via GitHub Actions.
+
 ## API de l'agent
 
 | Groupe | Routes |
